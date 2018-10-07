@@ -22,7 +22,7 @@ CFLAGS = -Wall -g -std=c++11
 # define any directories containing header files other than /usr/include
 # eg: INCLUDES = -I/home/newhall/include  -I../include `pkg-config --cflags opencv`
 #############################################################################
-INCLUDES = -I.include
+INCLUDES = -I./include
 
 #############################################################################
 # define the searching scope of the library paths in addition to /usr/lib
@@ -82,22 +82,21 @@ WARN_STRING  = "[WARNING]"
 
 # define the function that run the command and check the running state
 # run_and_check($1: cmd_info, $2: target_name, $3: cmd)
+# Note: in this shell function, every line have to be ended with \ (including a empty line)
 define run_and_check
-    printf "%-18b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)$(NO_COLOR)\r"; \
-    $(3) 2> $@.log; \
-
-    RESULT=$$?; \
-        if [ $$RESULT -ne 0 ]; then \
-          printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
-        elif [ -s $@.log ]; then \
-          printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
-        else  \
-          printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
-        fi; \
-
-        cat $@.log; \
-        rm -f $@.log; \
-    exit $$RESULT
+	printf "%-18b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)$(NO_COLOR)\r"; \
+	$(3) 2> $@.log; \
+	RESULT=$$?; \
+		if [ $$RESULT -ne 0 ]; then \
+		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
+		elif [ -s $@.log ]; then \
+		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
+		else  \
+		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
+		fi; \
+		cat $@.log; \
+		rm -f $@.log; \
+	exit $$RESULT
 endef
 
 
@@ -109,10 +108,10 @@ endef
 .PHONY: depend clean run all
 
 all: $(TARGET)
-    @echo $(TARGET) has been succesfully built
+	@echo $(TARGET) has been succesfully built
 
 $(TARGET): $(OBJS)
-    @$(call run_and_check,"Building",$@,$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LFLAGS) $(LIBS))
+	@$(call run_and_check,"Building",$@,$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LFLAGS) $(LIBS))
 
 #############################################################################
 # this is a suffix replacement rule for building .o's from .c's
@@ -121,16 +120,16 @@ $(TARGET): $(OBJS)
 # (see the gnu make manual section about automatic variables)
 #############################################################################
 $(OBJS_DIR)/%.o: %.cpp $(HEADERS)
-    @mkdir -p $(dir $@)
-    @$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
+	@mkdir -p $(dir $@)
+	@$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
 
 run: $(TARGET)
-    ./$(TARGET)
+	./$(TARGET)
 
 clean:
-    $(RM) -rf $(OBJS_DIR) $(TARGET)
+	$(RM) -rf $(OBJS_DIR) $(TARGET)
 
 depend: $(SRCS)
-    makedepend $(INCLUDES) $^
+	makedepend $(INCLUDES) $^
 
 # DO NOT DELETE THIS LINE -- make depend needs it

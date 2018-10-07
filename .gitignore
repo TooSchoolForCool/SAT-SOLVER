@@ -5,6 +5,9 @@
 sat
 launch
 
+# ignore object files and directory
+obj/
+
 # Prerequisites
 *.d
 
