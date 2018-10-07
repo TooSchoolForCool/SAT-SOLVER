@@ -66,6 +66,7 @@ TARGET = sat
 # 	Warnings are Yellow
 # 	Success is Green
 #############################################################################
+
 # Define color MACRO
 COM_COLOR   = \033[0;34m
 OBJ_COLOR   = \033[0;36m
@@ -74,56 +75,44 @@ ERROR_COLOR = \033[0;31m
 WARN_COLOR  = \033[0;33m
 NO_COLOR    = \033[m
 
+# define result tag
 OK_STRING    = "[OK]"
 ERROR_STRING = "[ERROR]"
 WARN_STRING  = "[WARNING]"
-COM_STRING   = "Compiling"
 
-define asd
-	printf "%b" "$(COM_COLOR)$(1) $(OBJ_COLOR)$(^)$(NO_COLOR)\r"; \
-	$(2) 2> $@.log; \
+# define the function that run the command and check the running state
+# run_and_check($1: cmd_info, $2: target_name, $3: cmd)
+define run_and_check
+	printf "%-18b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)$(NO_COLOR)\r"; \
+	$(3) 2> $@.log; \
+
 	RESULT=$$?; \
 		if [ $$RESULT -ne 0 ]; then \
-		  printf "%-80b%b" "$(COM_COLOR)$(1)$(OBJ_COLOR) $^" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
+		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
 		elif [ -s $@.log ]; then \
-		  printf "%-80b%b" "$(COM_COLOR)$(1)$(OBJ_COLOR) $^" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
+		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
 		else  \
-		  printf "%-80b%b" "$(COM_COLOR)$(1)$(OBJ_COLOR) $(^)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
+		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
 		fi; \
+
 		cat $@.log; \
 		rm -f $@.log; \
 	exit $$RESULT
 endef
 
-define build_and_check
-	printf "%-18b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(^)$(NO_COLOR)\r"; \
-	$(2) 2> $@.log; \
-	RESULT=$$?; \
-		if [ $$RESULT -ne 0 ]; then \
-		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $^" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
-		elif [ -s $@.log ]; then \
-		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $^" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
-		else  \
-		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(^)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
-		fi; \
-		cat $@.log; \
-		rm -f $@.log; \
-	exit $$RESULT
-endef
 
 #############################################################################
 # The following part of the makefile is generic; it can be used to 
 # build any executable just by changing the definitions above and by
 # deleting dependencies appended to the file from 'make depend'
 #############################################################################
-
 .PHONY: depend clean run all
 
 all: $(TARGET)
 	@echo $(TARGET) has been succesfully built
 
 $(TARGET): $(OBJS)
-	@$(call build_and_check,"Building", $(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LFLAGS) $(LIBS))
+	@$(call run_and_check,"Building",$@,$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LFLAGS) $(LIBS))
 
 #############################################################################
 # this is a suffix replacement rule for building .o's from .c's
@@ -133,7 +122,7 @@ $(TARGET): $(OBJS)
 #############################################################################
 $(OBJS_DIR)/%.o: %.cpp $(HEADERS)
 	@mkdir -p $(dir $@)
-	@$(call build_and_check,"Compiling", $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
+	@$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
 
 run: $(TARGET)
 	./$(TARGET)
