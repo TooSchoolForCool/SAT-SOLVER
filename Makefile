@@ -3,7 +3,7 @@
 #               (dependencies are added to end of Makefile)
 # 'make'        build executable file $(TARGET)
 # 'make clean'  removes all .o and executable files
-# 'make run'	build executalbe file $(TARGET) and run it ./$(TARGET)
+# 'make run'    build executalbe file $(TARGET) and run it ./$(TARGET)
 #############################################################################
 
 # define the C compiler to use
@@ -28,7 +28,7 @@ INCLUDES = -I.include
 # define the searching scope of the library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-#	eg: LFLAGS = -L/home/newhall/lib  -L../lib `pkg-config --libs opencv`
+#   eg: LFLAGS = -L/home/newhall/lib  -L../lib `pkg-config --libs opencv`
 #############################################################################
 LFLAGS = 
 
@@ -36,7 +36,7 @@ LFLAGS =
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-#	eg: LIBS = -lmylib -lm -lboost_program_options
+#   eg: LIBS = -lmylib -lm -lboost_program_options
 #############################################################################
 LIBS = -lboost_program_options
 
@@ -62,9 +62,9 @@ TARGET = sat
 
 #############################################################################
 # The following part define the color highlights of the makefile output
-# 	Errors are Red
-# 	Warnings are Yellow
-# 	Success is Green
+#   Errors are Red
+#   Warnings are Yellow
+#   Success is Green
 #############################################################################
 
 # Define color MACRO
@@ -83,21 +83,21 @@ WARN_STRING  = "[WARNING]"
 # define the function that run the command and check the running state
 # run_and_check($1: cmd_info, $2: target_name, $3: cmd)
 define run_and_check
-	printf "%-18b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)$(NO_COLOR)\r"; \
-	$(3) 2> $@.log; \
+    printf "%-18b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)$(NO_COLOR)\r"; \
+    $(3) 2> $@.log; \
 
-	RESULT=$$?; \
-		if [ $$RESULT -ne 0 ]; then \
-		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
-		elif [ -s $@.log ]; then \
-		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
-		else  \
-		  printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
-		fi; \
+    RESULT=$$?; \
+        if [ $$RESULT -ne 0 ]; then \
+          printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
+        elif [ -s $@.log ]; then \
+          printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $2" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
+        else  \
+          printf "%-18b%-60b%b" "$(COM_COLOR)$(1)" "$(OBJ_COLOR) $(2)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
+        fi; \
 
-		cat $@.log; \
-		rm -f $@.log; \
-	exit $$RESULT
+        cat $@.log; \
+        rm -f $@.log; \
+    exit $$RESULT
 endef
 
 
@@ -109,10 +109,10 @@ endef
 .PHONY: depend clean run all
 
 all: $(TARGET)
-	@echo $(TARGET) has been succesfully built
+    @echo $(TARGET) has been succesfully built
 
 $(TARGET): $(OBJS)
-	@$(call run_and_check,"Building",$@,$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LFLAGS) $(LIBS))
+    @$(call run_and_check,"Building",$@,$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LFLAGS) $(LIBS))
 
 #############################################################################
 # this is a suffix replacement rule for building .o's from .c's
@@ -121,16 +121,16 @@ $(TARGET): $(OBJS)
 # (see the gnu make manual section about automatic variables)
 #############################################################################
 $(OBJS_DIR)/%.o: %.cpp $(HEADERS)
-	@mkdir -p $(dir $@)
-	@$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
+    @mkdir -p $(dir $@)
+    @$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
 
 run: $(TARGET)
-	./$(TARGET)
+    ./$(TARGET)
 
 clean:
-	$(RM) -rf $(OBJS_DIR) $(TARGET)
+    $(RM) -rf $(OBJS_DIR) $(TARGET)
 
 depend: $(SRCS)
-	makedepend $(INCLUDES) $^
+    makedepend $(INCLUDES) $^
 
 # DO NOT DELETE THIS LINE -- make depend needs it
