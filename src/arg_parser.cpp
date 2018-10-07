@@ -12,7 +12,8 @@ variables_map parse_arg(int argc, const char **argv)
         options_description desc{"Options"};
         desc.add_options()
             ("help,h", "Help screen")
-            ("src,c", value<string>()->default_value(""), "CNF source file");
+            ("src,c", value<string>()->required(), "CNF source file")
+            ("out,o", value<string>()->default_value(""), "Output directory");
 
         variables_map vm;
         store(parse_command_line(argc, argv, desc), vm);
