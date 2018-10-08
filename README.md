@@ -1,6 +1,6 @@
 # SAT-SOLVER
 
-![travis_build](https://travis-ci.com/TooSchoolForCool/SAT-SOLVER.svg?token=pTSTf8Kr3MZ8RE9G5srX&branch=master)![cpp11](https://img.shields.io/badge/C%2B%2B-11-blue.svg)![ubuntu_version](https://img.shields.io/badge/Ubuntu-16.04-blue.svg)![license](https://img.shields.io/hexpm/l/plug.svg)
+[![Build Status](https://travis-ci.com/TooSchoolForCool/SAT-SOLVER.svg?token=pTSTf8Kr3MZ8RE9G5srX&branch=master)](https://travis-ci.com/TooSchoolForCool/SAT-SOLVER) ![cpp11](https://img.shields.io/badge/C%2B%2B-11-blue.svg) ![ubuntu_version](https://img.shields.io/badge/Ubuntu-16.04-blue.svg) ![license](https://img.shields.io/hexpm/l/plug.svg)
 
 This repo implements a SAT solver for Conjunctive Normal Form (CNF). This is also the homework #1 for the class CS267A: Probabilistic Programming and Relational Learning at UCLA.
 
@@ -25,12 +25,21 @@ The binary is built under current directory, and is named `sat`.
 The program take the .cnf file which looks like
 
 ```
-4 2
-1 2 -3 0
-1 -4 0
+5 3
+1 -5 4 0
+-1 5 3 4 0
+-3 -4 0
 ```
 
-The first line `4 2` indicates the file has 4 variables and 2 clauses. Then, the following 2 lines describe the 2 clauses, respectively. Every clause composed of integers where positive integers representing non-negated literals and negative integers representing negated literals. At the end of each clause, there is a `0` character which indicates the END of a clause.
+The first line `4 2` indicates the file has 5 variables and 3 clauses. Then, the following 3 lines describe the 3 clauses, respectively. Every clause composed of integers where positive integers representing non-negated literals and negative integers representing negated literals. At the end of each clause, there is a `0` character which indicates the END of a clause. The output should look like following,
+
+```
+----------------tests/5_sat.cnf----------------
+Satisfiable
+1 0 -3 0 5
+```
+
+Since there are 5 variables, the solution contains 5 integers, where `1` and `5` indicate the 1st and the 5th variables should be `True`, and `-3` indicates the 3rd variable should be `False`. The `0` at the 2nd and 4th place indicate the 2nd and 4th variable could be either `True` or `False`.
 
 
 
