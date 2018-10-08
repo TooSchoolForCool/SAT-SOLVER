@@ -16,7 +16,7 @@ RM = rm
 OBJS_DIR = obj
 
 # define any compile-time flags
-CFLAGS = -Wall -g -std=c++11
+CFLAGS = -g -std=c++11
 
 #############################################################################
 # define any directories containing header files other than /usr/include
@@ -123,8 +123,9 @@ $(OBJS_DIR)/%.o: %.cpp $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
 
-run: $(TARGET)
-	./$(TARGET)
+test: $(TARGET)
+	./$(TARGET) -c ./tests/1.cnf
+	./$(TARGET) -c ./tests/2.cnf
 
 clean:
 	$(RM) -rf $(OBJS_DIR) $(TARGET)
