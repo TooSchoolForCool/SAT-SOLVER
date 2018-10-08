@@ -16,12 +16,17 @@ int read_cnf(vector<vector<int> > &vec, const string &file_name)
     while(getline(file_in, line))
     {
         istringstream iss(line);
-        vector<int> sentence;
+        vector<int> clause;
         int tmp;
 
         while(iss >> tmp)
-            sentence.push_back(tmp);
-        vec.push_back(sentence);
+        {
+            // end of line
+            if(tmp == 0)
+                break;
+            clause.push_back(tmp);
+        }
+        vec.push_back(clause);
     }
 
     return n_var;
