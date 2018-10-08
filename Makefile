@@ -124,8 +124,26 @@ $(OBJS_DIR)/%.o: %.cpp $(HEADERS)
 	@$(call run_and_check,"Compiling",$<,$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@)
 
 test: $(TARGET)
-	./$(TARGET) -c ./tests/1.cnf
-	./$(TARGET) -c ./tests/2.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/1_sat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/2_unsat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/3_sat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/4_unsat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/5_sat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/6_sat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/7_sat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/8_unsat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/9_unsat.cnf
+	@echo "*****************************************************"
+	./$(TARGET) -c ./tests/10_unsat.cnf
 
 clean:
 	$(RM) -rf $(OBJS_DIR) $(TARGET)
