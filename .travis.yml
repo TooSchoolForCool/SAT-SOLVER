@@ -1,0 +1,17 @@
+sudo: required
+
+compiler:
+- g++
+
+os:
+- linux
+
+before_install:
+- sudo apt-get update
+- sudo apt-get install libboost-all-dev
+
+install:
+- make
+
+script:
+- make test

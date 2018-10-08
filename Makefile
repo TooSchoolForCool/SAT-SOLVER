@@ -108,7 +108,7 @@ endef
 # build any executable just by changing the definitions above and by
 # deleting dependencies appended to the file from 'make depend'
 #############################################################################
-.PHONY: depend clean run all
+.PHONY: depend clean test all
 
 all: $(TARGET)
 	@echo $(TARGET) has been succesfully built
@@ -129,7 +129,7 @@ $(OBJS_DIR)/%.o: %.cpp $(HEADERS)
 test: $(TARGET)
 	@$(foreach var, $(TEST_FILES), \
 		echo "----------------$(var)----------------"; \
-		./sat -c $(var); \
+		./$(TARGET) -c $(var); \
 	)
 
 clean:
