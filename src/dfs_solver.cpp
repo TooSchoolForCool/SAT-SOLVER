@@ -48,7 +48,7 @@ vector<int> DfsSolver::get_solution()
 void DfsSolver::print_solution()
 {
     for(size_t i = 1; i < solution_.size(); i++)
-        cout << solution_[i] << " ";
+            cout << (solution_[i] != 0 ? solution_[i] : i) << " ";
     cout << endl;
 }
 

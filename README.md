@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/TooSchoolForCool/SAT-SOLVER.svg?token=pTSTf8Kr3MZ8RE9G5srX&branch=master)](https://travis-ci.com/TooSchoolForCool/SAT-SOLVER) ![cpp11](https://img.shields.io/badge/C%2B%2B-11-blue.svg) ![ubuntu_version](https://img.shields.io/badge/Ubuntu-16.04-blue.svg) ![license](https://img.shields.io/hexpm/l/plug.svg)
 
-This repo implements a SAT solver for Conjunctive Normal Form (CNF). This is also the homework #1 for the class CS267A: Probabilistic Programming and Relational Learning at UCLA.
+This repo implements a SAT solver for Conjunctive Normal Form (CNF) by utilizing DPLL algorithm. This is also the homework #1 for the class CS267A: Probabilistic Programming and Relational Learning at UCLA.
 
 ## 1. Installation
 
@@ -31,7 +31,7 @@ The program take the .cnf file which looks like
 -3 -4 0
 ```
 
-The first line `4 2` indicates the file has 5 variables and 3 clauses. Then, the following 3 lines describe the 3 clauses, respectively. Every clause composed of integers where positive integers representing non-negated literals and negative integers representing negated literals. At the end of each clause, there is a `0` character which indicates the END of a clause. The output should look like following,
+The first line `5 3` indicates the file has 5 variables and 3 clauses. Then, the following 3 lines describe the 3 clauses, respectively. Every clause composed of integers where positive integers representing non-negated literals and negative integers representing negated literals. At the end of each clause, there is a `0` character which indicates the END of a clause. The output should look like following,
 
 ```
 ----------------tests/5_sat.cnf----------------
